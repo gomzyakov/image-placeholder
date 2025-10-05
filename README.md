@@ -1,1 +1,90 @@
-# image-placeholder
+# Simple image placeholder generator on PHP
+
+Generate small, deterministic placeholder images using [BlurHash](https://blurha.sh) and PHP GD.
+
+### Features
+
+- 🍴 Deterministic output by seed
+- 🌇 PNG binary output ready to save or stream
+- 🐊 Size and component bounds clamped for safety
+- 👌 Zero external binaries; pure PHP + GD
+
+### Requirements
+
+- PHP 8.3+
+- `ext-gd` enabled (for image creation and PNG encoding)
+
+### Installation
+
+```sh
+composer require gomzyakov/image-placeholder
+```
+
+### Usage
+
+```php
+<?php
+
+use Gomzyakov\ImagePlaceholder;
+
+$generator = new ImagePlaceholder();
+
+// Generate a 320x180 PNG as binary string (deterministic by seed)
+$png = $generator->generate(320, 180, seed: 'my-seed', cx: 4, cy: 3);
+
+// Save to disk
+file_put_contents(__DIR__ . '/placeholder.png', $png);
+```
+
+#### Send as HTTP response
+
+```php
+<?php
+
+use Gomzyakov\ImagePlaceholder;
+
+$generator = new ImagePlaceholder();
+$png = $generator->generate(48, 48, 'avatar-seed');
+
+header('Content-Type: image/png');
+header('Content-Length: ' . strlen($png));
+echo $png;
+```
+
+### API
+
+```php
+string ImagePlaceholder::generate(
+    int $width,
+    int $height,
+    string $seed = 'default',
+    int $cx = 4,
+    int $cy = 3
+)
+```
+
+- **width, height**: Target image size in pixels. Clamped to [1..2000].
+- **seed**: Any string. Same inputs → identical output PNG.
+- **cx, cy**: BlurHash component counts. Clamped to [1..9].
+
+Returns a PNG binary string. Throws `RuntimeException` if image creation fails.
+
+### Determinism
+
+The placeholder is generated from a pseudo-random source seeded by `seed`. Using the same tuple `(width, height, seed, cx, cy)` produces identical PNG output.
+
+### Testing
+
+Run the test suite:
+
+```sh
+composer phpunit
+```
+
+### License
+
+MIT — see [LICENSE](LICENSE).
+
+### Support
+
+Found an issue or have a suggestion? Please open an issue in the repository: `https://github.com/gomzyakov/image-placeholder`.
