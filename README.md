@@ -1,75 +1,90 @@
-# Code-style configuration for `php-cs-fixer`
+# Simple image placeholder generator on PHP
 
-This package allows sharing identical [php-cs-fixer](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer) formatting rules across all of your projects without copy-and-pasting configuration files.
+Generate small, deterministic placeholder images using [BlurHash](https://blurha.sh) and PHP GD.
 
-## Quickstart
+### Features
 
-### Step 1 of 3
+- 🍴 Deterministic output by seed
+- 🌇 PNG binary output ready to save or stream
+- 🐊 Size and component bounds clamped for safety
+- 👌 Zero external binaries; pure PHP + GD
 
-Install [`friendsofphp/php-cs-fixer`](https://github.com/FriendsOfPHP/PHP-CS-Fixer) & this package via Composer:
+### Requirements
+
+- PHP 8.3+
+- `ext-gd` enabled (for image creation and PNG encoding)
+
+### Installation
 
 ```sh
-composer require --dev friendsofphp/php-cs-fixer gomzyakov/code-style
+composer require gomzyakov/image-placeholder
 ```
 
-### Step 2 of 3
-
-Then create file `.php-cs-fixer.dist.php` at the root of your project with following contents:
+### Usage
 
 ```php
 <?php
 
-use Gomzyakov\CodeStyleFinder;
-use Gomzyakov\CodeStyleConfig;
+use Gomzyakov\ImagePlaceholder;
 
-// Routes for analysis with `php-cs-fixer`
-$routes = ['./src', './tests'];
+$generator = new ImagePlaceholder();
 
-return CodeStyleConfig::createWithFinder(CodeStyleFinder::createWithRoutes($routes));
+// Generate a 320x180 PNG as binary string (deterministic by seed)
+$png = $generator->generate(320, 180, seed: 'my-seed', cx: 4, cy: 3);
+
+// Save to disk
+file_put_contents(__DIR__ . '/placeholder.png', $png);
 ```
 
-Change the value of `$routes` depending on where your project's source code is.
-
-### Step 3 of 3
-
-**And that's it!** You can now find code style violations with following command:
-
-```sh
-./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --dry-run
-```
-
-And then completely fix them all with:
-
-```sh
-./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php
-```
-
-## Configuration
-
-You must pass a set of routes to the `CodeStyleFinder::createWithRoutes()` call. For example, for [Laravel](https://laravel.com) projects, this would be:
+#### Send as HTTP response
 
 ```php
-CodeStyleFinder::createWithRoutes(['./app', './config', './database', './routes', './tests'])
+<?php
+
+use Gomzyakov\ImagePlaceholder;
+
+$generator = new ImagePlaceholder();
+$png = $generator->generate(48, 48, 'avatar-seed');
+
+header('Content-Type: image/png');
+header('Content-Length: ' . strlen($png));
+echo $png;
 ```
 
-Also, you can pass a custom set of rules to the `CodeStyleConfig::createWithFinder()` call:
+### API
 
 ```php
-CodeStyleConfig::createWithFinder($finder, [
-    '@PHP81Migration'   => true,
-    'array_indentation' => false
-])
+string ImagePlaceholder::generate(
+    int $width,
+    int $height,
+    string $seed = 'default',
+    int $cx = 4,
+    int $cy = 3
+)
 ```
 
-## Support
+- **width, height**: Target image size in pixels. Clamped to [1..2000].
+- **seed**: Any string. Same inputs → identical output PNG.
+- **cx, cy**: BlurHash component counts. Clamped to [1..9].
 
-If you find any package errors, please, [make an issue](https://github.com/gomzyakov/code-style/issues) in current repository.
+Returns a PNG binary string. Throws `RuntimeException` if image creation fails.
 
-## License
+### Determinism
 
-This is open-sourced software licensed under the [MIT License](https://github.com/gomzyakov/code-style/blob/main/LICENSE).
+The placeholder is generated from a pseudo-random source seeded by `seed`. Using the same tuple `(width, height, seed, cx, cy)` produces identical PNG output.
 
-## Special thanks
+### Testing
 
-- https://github.com/FriendsOfPHP/PHP-CS-Fixer
-- https://mlocati.github.io/php-cs-fixer-configurator/
+Run the test suite:
+
+```sh
+composer phpunit
+```
+
+### License
+
+MIT — see [LICENSE](LICENSE).
+
+### Support
+
+Found an issue or have a suggestion? Please open an issue in the repository: `https://github.com/gomzyakov/image-placeholder`.
