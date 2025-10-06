@@ -1,6 +1,6 @@
 # Simple image placeholder generator on PHP
 
-Generate small, deterministic placeholder images using [BlurHash](https://blurha.sh) and PHP GD.
+A simple package that allows you to create placeholder images for your PHP website.
 
 ### Features
 
