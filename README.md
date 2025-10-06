@@ -4,10 +4,10 @@ A simple package that allows you to create placeholder images for your PHP websi
 
 ### Features
 
-- 🍴 Deterministic output by seed
-- 🌇 PNG binary output ready to save or stream
-- 🐊 Size and component bounds clamped for safety
-- 👌 Zero external binaries; pure PHP + GD
+- 🎉 Deterministic output by seed
+- 🏞️ PNG binary output ready to save or stream
+- 🔒 Size and component bounds clamped for safety
+- 🦄 Zero external binaries; pure PHP + GD
 
 ### Examples
 
