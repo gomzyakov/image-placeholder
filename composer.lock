@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fdc71db8ad76d5fd43cfaaf5788d7117",
+    "content-hash": "4997ad3fe0812368fe7af1e6a7552294",
     "packages": [
         {
             "name": "kornrunner/blurhash",
@@ -556,16 +556,16 @@
         },
         {
             "name": "gomzyakov/code-style",
-            "version": "v2.1.0",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gomzyakov/code-style.git",
-                "reference": "7c32738451793901372df1b97b32b807aa17593b"
+                "reference": "784d0f9ab5006a40625335248acd6a8c431fb96e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gomzyakov/code-style/zipball/7c32738451793901372df1b97b32b807aa17593b",
-                "reference": "7c32738451793901372df1b97b32b807aa17593b",
+                "url": "https://api.github.com/repos/gomzyakov/code-style/zipball/784d0f9ab5006a40625335248acd6a8c431fb96e",
+                "reference": "784d0f9ab5006a40625335248acd6a8c431fb96e",
                 "shasum": ""
             },
             "require": {
@@ -603,9 +603,9 @@
             ],
             "support": {
                 "issues": "https://github.com/gomzyakov/code-style/issues",
-                "source": "https://github.com/gomzyakov/code-style/tree/v2.1.0"
+                "source": "https://github.com/gomzyakov/code-style/tree/v2.3.0"
             },
-            "time": "2025-10-05T14:30:46+00:00"
+            "time": "2026-01-28T03:53:42+00:00"
         },
         {
             "name": "hamcrest/hamcrest-php",
@@ -4627,7 +4627,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.3"
+        "php": "^8.3",
+        "ext-gd": "*"
     },
     "platform-dev": {},
     "plugin-api-version": "2.6.0"
